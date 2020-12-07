@@ -1,11 +1,12 @@
 "use strict";
 
-const portNumber = 3000;
+const coreVars = {
+    portNumber: 3000,
+    http: require("http"),
+    httpStatus: require("http-status-codes"),
+}
 
-const httpCore = require("http");
-const httpStatus = require("http-status-codes");
-
-const app = httpCore.createServer();
+const app = coreVars.http.createServer()
 
 app.on("request", (req, res) => {
     res.writeHead(httpStatus.OK, { 
@@ -15,7 +16,7 @@ app.on("request", (req, res) => {
     res.end(responseMessage);
 });
 
-app.listen(portNumber);
+app.listen(coreVars.portNumber);
 console.log(
-  `The server has started, currently listening on Port:${portNumber}`
+  `The server has started, currently listening on Port:${coreVars.portNumber}`
 );
