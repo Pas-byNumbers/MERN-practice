@@ -9,7 +9,7 @@ const app = httpCore.createServer((request, response) => {
     response.writeHead(httpStatus.OK, {
         "Content-Type": "text/html"
     });
-    let responseMessage = "<h1>Hello World from the Server!</h1>"
+    let responseMessage = "<h1>&#9731; Hello World from the Server! <sup>&#169;</sup></h1>"
 
     response.write(responseMessage)
     response.end

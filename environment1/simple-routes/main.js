@@ -1,34 +1,34 @@
 "use strict";
 
 const http = require("http");
-const httpStatus = require("http-status-codes")
+const httpStatus = require("http-status-codes");
 
 const portNumber = 3000
 
+const routeResponseMap = {
+  "/info": "<h1>Info Page</h1>",
+  "/about": "<h1>About Page</h1>",
+  "/hello": "<h1>Hello Page</h1>"
+}
+
 const app = http.createServer();
-const getJSONString = obj => {
-    return JSON.stringify(obj, null, 2);
- };
+
 
 app.on("request", (req, res) => {
-  let body = [];
-  req.on("data", (bodyData) => {
-    body.push(bodyData);
-  });
-  req.on("end", () => {
-    body = Buffer.concat(body).toString();
-    console.log(`Request Body Contents: ${body}`);
-  });
-  console.log(`Method: ${getJSONString(req.method)}`);
-  console.log(`URL: ${getJSONString(req.url)}`);
-  console.log(`Headers: ${getJSONString(req.headers)}`);
 
-  res.writeHead(httpStatus.OK, { "Content-Type": "text/html" });
-  let responseMessage = "<h1>This will show on the screen.</h1>";
-  res.end(responseMessage);
+  res.writeHead(httpStatus.OK, {
+    "Content-Type": "text/html"
+  });
+
+  if (routeResponseMap[req.url]) {
+    res.end(routeResponseMap[req.url]);
+  } else {
+    res.end("<h1>Welcome</h1>");
+  }
+  
 });
 
 app.listen(portNumber);
 console.log(
-  `The server has started and is listening on Port:⌲ ${portNumber}`
+  `The server has started and is listening on PORT:${portNumber}`
 );
