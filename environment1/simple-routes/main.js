@@ -16,12 +16,17 @@ const app = http.createServer();
 
 app.on("request", (req, res) => {
 
-  res.writeHead(httpStatus.OK, {
-    "Content-Type": "text/html"
-  });
 
   if (routeResponseMap[req.url]) {
+    res.writeHead(httpStatus.OK, {
+      "Content-Type": "text/html"
+    });
     res.end(routeResponseMap[req.url]);
+  } else if (req.url === "/error") {
+    res.writeHead(404, {
+      "Content-Type": "text/html"
+    });
+    res.end("<h1>Sorry, Page not Found</h1>");
   } else {
     res.end("<h1>Welcome</h1>");
   }
