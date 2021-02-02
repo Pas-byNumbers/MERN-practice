@@ -4,7 +4,7 @@ const htmlContentType = {
   "Content-Type": "text/html",
 };
 
-//   you can write routes here on in main.js
+//   you can write routes here or in main.js
 const routes = {
   GET: {
     "/info": (req, res) => {
@@ -29,6 +29,8 @@ exports.handle = (req, res) => {
     console.log("error: " + ex);
   }
 };
+
+// export routes list (obj) to be available for main.js to add its own paths
 exports.get = (url, action) => {
   routes["GET"][url] = action;
 };
