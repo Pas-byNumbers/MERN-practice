@@ -2,6 +2,7 @@
 
 const mongoose = require("mongoose"),
   { Schema } = require("mongoose"),
+  passportLocalMongoose = require("passport-local-mongoose"),
   Subscriber = require("./subscriber");
 
 var userSchema = new Schema(
@@ -27,7 +28,6 @@ var userSchema = new Schema(
       min: [1000, "Zip code too short"],
       max: 99999
     },
-    // Not recommended to save passwords as plain text, this is just an example 
     password: {
       type: String,
       required: true
@@ -36,7 +36,6 @@ var userSchema = new Schema(
     courses: [{ type: Schema.Types.ObjectId, ref: "Course" }]
   },
   {
-    // use this to add createdAt and updatedAt properties
     timestamps: true
   }
 );
@@ -62,6 +61,10 @@ userSchema.pre("save", function(next) {
   } else {
     next();
   }
+});
+
+userSchema.plugin(passportLocalMongoose, {
+  usernameField: "email"
 });
 
 module.exports = mongoose.model("User", userSchema);

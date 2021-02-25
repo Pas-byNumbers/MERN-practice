@@ -2,6 +2,7 @@
 
 const mongoose = require("mongoose"),
   { Schema } = require("mongoose"),
+  passportLocalMongoose = require("passport-local-mongoose"),
   Subscriber = require("./subscriber");
 
 var userSchema = new Schema(
@@ -27,16 +28,16 @@ var userSchema = new Schema(
       min: [1000, "Zip code too short"],
       max: 99999
     },
-    // Not recommended to save passwords as plain text, this is just an example 
-    password: {
+    // password field can be deleted, passport middleware has its own hash and salt properties for password management
+    
+    /* password: {
       type: String,
       required: true
-    },
+    }, */
     subscribedAccount: { type: Schema.Types.ObjectId, ref: "Subscriber" },
     courses: [{ type: Schema.Types.ObjectId, ref: "Course" }]
   },
   {
-    // use this to add createdAt and updatedAt properties
     timestamps: true
   }
 );
@@ -62,6 +63,10 @@ userSchema.pre("save", function(next) {
   } else {
     next();
   }
+});
+// passport defaults authentication to a username check, here we set it to check the email property instead
+userSchema.plugin(passportLocalMongoose, {
+  usernameField: "email"
 });
 
 module.exports = mongoose.model("User", userSchema);
